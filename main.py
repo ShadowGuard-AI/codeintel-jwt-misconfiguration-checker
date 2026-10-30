@@ -6,6 +6,10 @@ import os
 import re
 import sys
 
+# PyJWT is not imported here on purpose: the scan is pure text
+# matching and never calls the library, so importing it only added
+# a startup failure on machines without the package.
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -75,14 +79,19 @@ def check_file(filepath, check_secrets):
             # assignment such as secret = "abc"); accepting only the colon
             # form missed the assignment form entirely.
             if check_secrets:
-                secret_matches = re.findall(r"(secret|key) *[:=] *['\"]([^'\"]*)['\"]", content, re.IGNORECASE)
+                secret_matches = re.findall(r"(\w*(?:secret|key)\w*)\s*[:=]\s*['\"]([^'\"]*)['\"]", content, re.IGNORECASE)
                 for match in secret_matches:
                     secret_name, secret_value = match
 
                     # Heuristic for weak secrets (very short, predictable patterns)
-                    if len(secret_value) < 16:
-                        misconfigurations.append(f"Potentially weak secret '{secret_name}' with value '{secret_value}' found in: {filepath}")
-                    elif secret_value.lower() in ['secret', 'password', '123456', 'admin', 'test']:
+                    # Every predictable entry is shorter than 16 characters,
+                    # so the old if/elif made the list test unreachable,
+                    # and a secret built by repeating a listed word
+                    # ("passwordpassword", 16 characters) passed both.
+                    predictable = ['secret', 'password', '123456', 'admin', 'test']
+                    lowered = secret_value.lower()
+                    repeated = any(lowered == word * (len(lowered) // len(word)) for word in predictable if len(lowered) % len(word) == 0)
+                    if lowered in predictable or repeated or len(secret_value) < 16:
                         misconfigurations.append(f"Potentially weak secret '{secret_name}' with value '{secret_value}' found in: {filepath}")
 
 
@@ -101,7 +110,9 @@ def check_file(filepath, check_secrets):
             if re.search(r"jwt\.encode\(.*\balgorithm=['\"]HS256['\"]", content, re.IGNORECASE):
                 misconfigurations.append(f"HS256 encoding found. Recommend considering stronger algorithms in: {filepath}")
 
-            if re.search(r"jwt\.decode\(.*\bverify=False", content, re.IGNORECASE):
+            # Current PyJWT disables verification through an options
+            # dict rather than verify=False, so both forms are checked.
+            if re.search(r"jwt\.decode\(.*\bverify\s*=\s*False", content, re.IGNORECASE) or re.search(r"verify_signature['\"]?\s*:\s*False", content):
                  misconfigurations.append(f"Insecure verification disabled. Verify is set to false, this is unsafe. File: {filepath}")
 
     except FileNotFoundError:

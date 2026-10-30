@@ -5,7 +5,6 @@ import logging
 import os
 import re
 import sys
-import jwt  # PyJWT library
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -64,13 +63,19 @@ def check_file(filepath, check_secrets):
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
 
-            # Check for 'alg: none'
-            if re.search(r"alg *: *['\"]none['\"]", content, re.IGNORECASE):
+            # Check for 'alg: none'. The key may itself be quoted, as in a
+            # JSON header or a Python dict ({"alg": "none"}), so an optional
+            # quote is allowed between the name and the colon; requiring the
+            # colon straight after "alg" missed the common dict form.
+            if re.search(r"alg['\"]? *: *['\"]none['\"]", content, re.IGNORECASE):
                 misconfigurations.append(f"Insecure 'alg: none' found in: {filepath}")
 
-            # Check for HS256 with short/predictable secrets
+            # Check for HS256 with short/predictable secrets. The separator
+            # may be a colon (dict or JSON) or an equals sign (a plain
+            # assignment such as secret = "abc"); accepting only the colon
+            # form missed the assignment form entirely.
             if check_secrets:
-                secret_matches = re.findall(r"(secret|key) *: *['\"]([^'\"]*)['\"]", content, re.IGNORECASE)
+                secret_matches = re.findall(r"(secret|key) *[:=] *['\"]([^'\"]*)['\"]", content, re.IGNORECASE)
                 for match in secret_matches:
                     secret_name, secret_value = match
 
@@ -81,14 +86,19 @@ def check_file(filepath, check_secrets):
                         misconfigurations.append(f"Potentially weak secret '{secret_name}' with value '{secret_value}' found in: {filepath}")
 
 
-            # Check for missing expiration checks (e.g., not verifying exp claim)
-            if not re.search(r"exp|expiration", content, re.IGNORECASE):
+            # Check for missing expiration checks (e.g., not verifying exp
+            # claim). This only means anything in a file that touches JWTs
+            # at all; without the gate, every unrelated source file in a
+            # scanned tree was reported as missing expiration handling.
+            if "jwt" in content.lower() and not re.search(r"exp|expiration", content, re.IGNORECASE):
                 misconfigurations.append(f"Missing expiration claim handling detected in: {filepath}. Review JWT validation logic.")
 
             # Look for use of insecure or deprecated libraries and functions
             # Example: Suggesting the use of `jwt.decode` with proper algorithms verification.
 
-            if re.search(r"jwt\.encode\(.*\balgorithm='HS256'", content, re.IGNORECASE):
+            # Either quote style counts: algorithm="HS256" is just as common
+            # in real code as the single quoted form.
+            if re.search(r"jwt\.encode\(.*\balgorithm=['\"]HS256['\"]", content, re.IGNORECASE):
                 misconfigurations.append(f"HS256 encoding found. Recommend considering stronger algorithms in: {filepath}")
 
             if re.search(r"jwt\.decode\(.*\bverify=False", content, re.IGNORECASE):

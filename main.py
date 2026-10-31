@@ -13,6 +13,11 @@ import sys
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# Files that could not be read or decoded during this run. A failed
+# file is not a clean file, so main reports each one as not scanned
+# and exits 1 when this list is not empty.
+scan_failures = []
+
 def setup_argparse():
     """
     Sets up the argument parser for the JWT Misconfiguration Checker.
@@ -92,7 +97,12 @@ def check_file(filepath, check_secrets):
                     lowered = secret_value.lower()
                     repeated = any(lowered == word * (len(lowered) // len(word)) for word in predictable if len(lowered) % len(word) == 0)
                     if lowered in predictable or repeated or len(secret_value) < 16:
-                        misconfigurations.append(f"Potentially weak secret '{secret_name}' with value '{secret_value}' found in: {filepath}")
+                        # The found value never goes into the report,
+                        # in clear, on the console or in an output
+                        # file. Only its length and whether it matched
+                        # the predictable list are reported.
+                        matched = lowered in predictable or repeated
+                        misconfigurations.append(f"Potentially weak secret '{secret_name}' (length {len(secret_value)}, matched predictable list: {matched}) found in: {filepath}")
 
 
             # Check for missing expiration checks (e.g., not verifying exp
@@ -117,9 +127,11 @@ def check_file(filepath, check_secrets):
 
     except FileNotFoundError:
         logging.error(f"File not found: {filepath}")
+        scan_failures.append(filepath)
         return []  # Return empty list if file not found
     except Exception as e:
         logging.error(f"Error processing file {filepath}: {e}")
+        scan_failures.append(filepath)
         return []
 
     return misconfigurations
@@ -165,21 +177,29 @@ def main():
         print(f"Error: Target '{target}' is not a valid file or directory.")
         sys.exit(1)
 
+    failed_files = list(scan_failures)
+
     if misconfigurations:
         print("JWT Misconfigurations Found:")
         for misconfiguration in misconfigurations:
             print(misconfiguration)
 
-        if args.output:
-            try:
-                with open(args.output, "w") as outfile:
-                    for misconfiguration in misconfigurations:
-                        outfile.write(misconfiguration + "\n")
-                print(f"Results saved to: {args.output}")
-            except Exception as e:
-                logging.error(f"Error writing to output file: {e}")
+    for failed in failed_files:
+        print(f"Not scanned: {failed}")
 
-        sys.exit(1)  # Indicate that vulnerabilities were found
+    if args.output and (misconfigurations or failed_files):
+        try:
+            with open(args.output, "w") as outfile:
+                for misconfiguration in misconfigurations:
+                    outfile.write(misconfiguration + "\n")
+                for failed in failed_files:
+                    outfile.write(f"Not scanned: {failed}\n")
+            print(f"Results saved to: {args.output}")
+        except Exception as e:
+            logging.error(f"Error writing to output file: {e}")
+
+    if misconfigurations or failed_files:
+        sys.exit(1)  # Indicate that vulnerabilities were found, or a file was not scanned
     else:
         print("No JWT misconfigurations found.")
         sys.exit(0)  # Indicate successful scan, no issues found

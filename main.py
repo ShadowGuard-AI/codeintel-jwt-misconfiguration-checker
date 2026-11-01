@@ -109,6 +109,9 @@ def check_file(filepath, check_secrets):
             # claim). This only means anything in a file that touches JWTs
             # at all; without the gate, every unrelated source file in a
             # scanned tree was reported as missing expiration handling.
+            # I judge expiration handling per file, by text. A project that
+            # checks exp in a shared helper still gets this finding for
+            # every other file that mentions jwt and never says exp.
             if "jwt" in content.lower() and not re.search(r"exp|expiration", content, re.IGNORECASE):
                 misconfigurations.append(f"Missing expiration claim handling detected in: {filepath}. Review JWT validation logic.")
 
@@ -150,6 +153,9 @@ def scan_directory(directory, check_secrets):
     misconfigurations = []
     for root, _, files in os.walk(directory):
         for file in files:
+            # This filter applies only to directory scans. A single file
+            # handed to main directly is scanned whatever its extension,
+            # including a plain text note that happens to quote a token.
             if file.endswith((".py", ".js", ".java", ".go")):  # Example file extensions
                 filepath = os.path.join(root, file)
                 misconfigurations.extend(check_file(filepath, check_secrets))
@@ -187,6 +193,9 @@ def main():
     for failed in failed_files:
         print(f"Not scanned: {failed}")
 
+    # I write the output file only when there is something to put
+    # in it. A clean scan leaves no file behind, so a missing
+    # output file after a run means clean, not lost.
     if args.output and (misconfigurations or failed_files):
         try:
             with open(args.output, "w") as outfile:

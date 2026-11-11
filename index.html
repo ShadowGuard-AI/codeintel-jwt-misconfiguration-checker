@@ -3,62 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>codeintel-jwt-misconfiguration-checker: The Pigment Grinder's Mortar</title>
-<style>@font-face{font-family:'Bellota';src:url('fonts/Bellota.ttf') format('truetype');}@font-face{font-family:'Archivo';src:url('fonts/Archivo.ttf') format('truetype');}:root{--ground:#f5f0e1;--panel:#efe6cf;--head:#8c3b2e;--ink:#1e1a16;--lapis:#1b3a8c;--gold:#c9a227}*{box-sizing:border-box}body{margin:0;background:var(--ground);color:var(--ink);font-family:'Archivo',sans-serif;line-height:1.65}h1,h2,h3{font-family:'Bellota',serif;color:var(--head)}.hero img.heroimg{width:100%;height:48vh;object-fit:cover;display:block}.hero .in,main,footer{max-width:1120px;margin:0 auto;padding:1rem 6vw 2rem}.logo{width:200px}.btn{display:inline-block;text-decoration:none;font-family:'Bellota',serif;color:var(--head);background:#fbf8ee;border:2px solid #c9a227;border-radius:46% 46% 40% 40%;padding:.7rem 1.2rem;margin:.2rem}.btn:hover{filter:brightness(1.08)}.btn:active{border-color:var(--lapis)}.btn:focus-visible{outline:3px solid var(--lapis);outline-offset:3px}.plate{background:var(--panel);padding:.4rem 1.5rem 1.3rem;margin:1.8rem 0;border:1px solid var(--gold)}pre{background:#241f18;color:#f4f2ea;padding:1rem;overflow-x:auto;white-space:pre-wrap}.callout{border-left:6px solid var(--lapis);padding:.2rem 1.2rem 1rem;margin:1.2rem 0;background:#fbf8ee}.flag{border:2px solid var(--head);padding:.2rem 1.2rem 1rem;margin:1.2rem 0}.entry{display:flex;gap:1rem;padding:.5rem 0;border-bottom:1px solid #c9a227}.entry b{min-width:230px}a{color:var(--lapis)}</style>
+<title>codeintel-jwt-misconfiguration-checker: The Assay Office</title>
+<meta name="description" content="A thing believed on its mark alone: five spelling patterns read off the surface, and the token itself never opened.">
+<style>
+@font-face{font-family:'Playfair Display SC';src:url('fonts/PlayfairDisplaySC-Regular.ttf') format('truetype');font-weight:400;font-style:normal;}
+@font-face{font-family:'Playfair Display SC';src:url('fonts/PlayfairDisplaySC-Bold.ttf') format('truetype');font-weight:700;font-style:normal;}
+@font-face{font-family:'IBM Plex Serif';src:url('fonts/IBMPlexSerif-Regular.ttf') format('truetype');font-weight:400;font-style:normal;}
+@font-face{font-family:'IBM Plex Serif';src:url('fonts/IBMPlexSerif-Bold.ttf') format('truetype');font-weight:700;font-style:normal;}
+@font-face{font-family:'IBM Plex Serif';src:url('fonts/IBMPlexSerif-Italic.ttf') format('truetype');font-weight:400;font-style:italic;}
+:root{--bg:#101314;--panel:#e8ebec;--ink:#16191a;--accent:#3f5c4b;--paper:#f4f6f6}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Serif',serif;line-height:1.65}
+h1,h2{font-family:'Playfair Display SC',serif;font-weight:400}
+.hero img{width:100%;height:52vh;object-fit:cover;display:block}
+.wrap{max-width:1000px;margin:0 auto;padding:1rem 6vw 2.5rem}
+.card{background:var(--paper);border-radius:12px;padding:1.2rem 1.6rem 1.6rem;margin-top:1.2rem}
+.logo{width:300px;max-width:80vw;display:block;margin:.6rem 0}
+.banner{width:100%;display:block;border-radius:8px;margin:.8rem 0}
+.lede{font-size:1.15rem}
+code{background:rgba(0,0,0,.08);padding:.05rem .35rem;border-radius:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.grid img{width:100%}
+footer{color:var(--panel);max-width:1000px;margin:0 auto;padding:0 6vw 2rem;font-size:.92rem}
+a{color:var(--accent)}
+</style>
 </head>
 <body>
-<header class="hero">
-<img class="heroimg" src="assets/intro-banner.png" alt="Introduction view for codeintel-jwt-misconfiguration-checker, scenery first, no lettering">
-<div class="in">
-<img class="logo" src="assets/logo.png" alt="Themed mark for codeintel-jwt-misconfiguration-checker">
+<div class="hero"><img src="assets/intro-banner.png" alt="A hand drawing a small silver piece across a long black touchstone close up, leaving a fresh pale streak on the stone, with clay cupels soft on shelves behind"></div>
+<div class="wrap"><div class="card">
+<img class="logo" src="assets/logo.png" alt="One plain silver cup standing on a black touchstone slab, with a single pale streak rubbed across the stone beside it, on an assay bench">
 <h1>codeintel-jwt-misconfiguration-checker</h1>
-<p>A studio inventory written on a long bench, read from the window downward. Lapis is admitted only where the page states a finding, since in this room blue is the costly colour and is never spent on ornament.</p>
-</div>
-</header>
-<main>
-<nav><a class="btn" href="#s3">Scan This Target</a><a class="btn" href="#s3">Include the Secret Search</a><a class="btn" href="#s3">Save Results to a File</a><a class="btn" href="#s3">Show Debug Logging</a><a class="btn" href="#s3">Show Help</a></nav>
-<section class="plate" id="s0"><h2>The Mortar and the Token</h2><p>This program reads source text for signs of faulty JSON Web Token practice, searching for an alg entry set to none, for expiration handling that is absent from a file which otherwise speaks of jwt, for encoding done with HS256, and for verification switched off, with an optional further search, switched on only by a flag, for assigned secret or key values that are short, or that match a short list of predictable words, or that consist of one of those words repeated to fill their length.</p><div class="callout"><h3>What the program does not do</h3><p>PyJWT is deliberately not imported, no token is decoded, no signature is tried, no library configuration is loaded and validated, and the search is pattern matching over file contents from beginning to end. A reader who mistakes text searching for token testing will trust the result too far.</p></div></section>
-<section class="plate" id="s1"><h2>Installation, flagged in place</h2><pre>git clone https://github.com/ShadowStrikeHQ/codeintel-jwt-misconfiguration-checker</pre><div class="flag"><h3>Wrong organisation</h3><p>The address names the wrong organisation. The repository lives under ShadowGuard-AI, and the corrected address is therefore https://github.com/ShadowGuard-AI/codeintel-jwt-misconfiguration-checker. The README gives no directory change and no package installation after the clone, and this page invents neither, noting only, as a fact of the code, that the program runs on the standard library alone.</p></div></section>
-<section class="plate" id="s2"><h2>Five Patterns in the Grinding, the true invocation</h2><pre>python3 main.py TARGET [--verbose] [--check-secrets] [--output PATH]</pre><p>The README printed usage, a bare executable name followed by the word params in brackets, omits the one argument the parser requires and cannot be run as shown. The target comes first and is not optional, and everything after it is a flag or a flag with a path of its own.</p></section>
-<section class="plate" id="s3"><h2>The Required Target, arguments in parser order</h2><div class="entry"><b>target</b><span>Path to the file or directory to scan. Required and positional.</span></div><div class="entry"><b>--verbose</b><span>Turns on debug logging.</span></div><div class="entry"><b>--check-secrets</b><span>Enables the search for hardcoded secrets, which otherwise does not run at all, so a scan without that flag says nothing whatever about secrets.</span></div><div class="entry"><b>--output</b><span>Names a path to which results may be saved.</span></div><div class="entry"><b>-h</b><span>Shows the help message and exits.</span></div><p>Output rule: the file is written only when there is something to put in it, either findings or files that could not be scanned, so after a clean run no output file appears, and its absence means clean rather than lost.</p></section>
-<section class="plate" id="s4"><h2>Findings and Their Limits</h2><p>An alg none finding follows a written alg entry, quoted or unquoted at the key, set to the word none in either letter case. An HS256 finding follows any jwt.encode call written with that algorithm, whether the secret behind it is long or short, and is phrased in the code as a recommendation to consider stronger algorithms rather than as proof of weakness. A disabled verification finding follows jwt.decode written with verify set to False, or a verify_signature entry set to False. A directory walk descends through the tree and reads only files ending in .py, .js, .java, or .go, whereas a single file handed to the program directly is read whatever its ending may be.</p><div class="callout"><h3>A Helper Elsewhere Does Not Acquit This File</h3><p>A missing expiration finding is raised per file, and only where the file mentions jwt yet nowhere contains exp or expiration, which means expiration handled in a shared helper elsewhere does not acquit a file that stays silent on the subject.</p></div><div class="callout"><h3>The Value Is Never Printed</h3><p>A weak secret finding, under the flag, reports only the variable name, the length of its value, and whether that value matched the predictable list, and it never prints the value itself in clear, on the console or in a file.</p></div></section>
-<section class="plate" id="s5"><h2>Not Scanned Is Not Clean, and Exit One Means Look Again</h2><p>A target that is neither file nor directory is refused with an error and exit 1. A file that cannot be read or decoded is reported by name as not scanned and also brings the run to exit 1, since an unread file is not a clean file. Any finding brings exit 1. A run with no findings and no failures prints that no JWT misconfigurations were found and exits 0.</p></section>
-<section class="plate" id="s6"><h2>Licence line, closing the inventory</h2><pre>Copyright (c) ShadowStrikeHQ</pre><p>Printed as it stands and flagged as the second appearance of the wrong organisation name in the file. No licence text, no licence name, and no permission terms appear in the README at all.</p></section>
-<section class="plate"><h2>Preserved record, verbatim lines and code facts</h2>
-<p># codeintel-JWT-Misconfiguration-Checker</p>
-<p>Scans code for common JWT (JSON Web Token) misconfigurations, such as weak signature algorithms (e.g., HS256 with insecure secret), missing expiration claims, and usage of 'none' algorithm. Validates JWT libraries configurations. - Focused on Tools for static code analysis, vulnerability scanning, and code quality assurance</p>
-<p>## Install</p>
-<p>`git clone https://github.com/ShadowStrikeHQ/codeintel-jwt-misconfiguration-checker`</p>
-<p>## Usage</p>
-<p>`./codeintel-jwt-misconfiguration-checker [params]`</p>
-<p>## Parameters</p>
-<p>- `-h`: Show help message and exit</p>
-<p>- `--verbose`: No description provided</p>
-<p>- `--check-secrets`: Enable checks for hardcoded secrets.</p>
-<p>- `--output`: Path to save results to a file.</p>
-<p>## License</p>
-<p>Copyright (c) ShadowStrikeHQ</p>
-<p>python3 main.py TARGET [--verbose] [--check-secrets] [--output PATH]</p>
-<p>https://github.com/ShadowGuard-AI/codeintel-jwt-misconfiguration-checker</p>
-<p>PyJWT is deliberately not imported</p>
-<p>no token is decoded</p>
-<p>the file is written only when there is something to put in it</p>
-<p>.py, .js, .java, or .go</p>
-<p>Not Scanned Is Not Clean</p>
-<p>The Value Is Never Printed</p>
-<p>A Helper Elsewhere Does Not Acquit This File</p>
-<p>Scan This Target</p>
-<p>Include the Secret Search</p>
-<p>Save Results to a File</p>
-<p>Show Debug Logging</p>
-<p>Show Help</p>
-<p>The Mortar and the Token</p>
-<p>Five Patterns in the Grinding</p>
-<p>The Required Target</p>
-<p>Findings and Their Limits</p>
-<p>Exit One Means Look Again</p>
-</section>
-</main>
-<footer><p>Theme record for ShadowGuard-AI/codeintel-jwt-misconfiguration-checker. Fonts are embedded from the fonts folder beside this page, each under the SIL Open Font License 1.1.</p></footer>
+<p class="lede">A thing believed on its mark alone: five spelling patterns read off the surface, and the token itself never opened.</p>
+<img class="banner" src="assets/banner.png" alt="An assay master rubbing a silver piece across a long black touchstone on his bench and reading the streak, balances and clay cupels ranked behind him and a row of plain silver pieces along the bench edge">
+<section><h2>What the assay reads</h2><p><code>codeintel-jwt-misconfiguration-checker</code> searches source text for five JWT misconfiguration patterns. Run it as <code>python3 main.py TARGET</code>, with <code>--verbose</code> for debug logging, <code>--check-secrets</code> enabling the secret search, and <code>--output</code> saving results.</p><p>The five patterns are an alg of none (a quoted key allowed, as in a dict), HS256 named as the algorithm in a <code>jwt.encode</code> call, verification disabled in either spelling (<code>verify=False</code> or a <code>verify_signature</code> of False), a missing expiration finding raised per file that mentions jwt yet nowhere says exp or expiration, and, under its flag only, weak secrets.</p></section>
+<section><h2>The stated limit</h2><p>PyJWT is deliberately never imported: no token is decoded, no signature is tried, and no library configuration is loaded. The GitHub description claim that the tool validates JWT library configurations overstates a spelling search, and the README says so in its margin.</p><p>Weak secrets are reported by variable name, length, and predictable list match only; the value itself is never printed anywhere. A helper elsewhere checking expiration does not acquit a silent file.</p></section>
+<section><h2>Files and exit codes</h2><p>A directory walk reads only .py, .js, .java, and .go files, while a single file handed over directly is read whatever its ending. The output file is written only when there is something to put in it, so after a clean run no file appears and its absence means clean rather than lost. Findings or unreadable files exit 1; a clean run exits 0.</p></section>
+<section><h2>Kept as printed</h2><p>The README clone line names the stale ShadowStrikeHQ organisation, its usage line is a placeholder, its parameter list omits the required positional target and leaves <code>--verbose</code> undescribed, and its closing licence line reads Copyright (c) ShadowStrikeHQ while the LICENSE file is MIT. All stand as printed and are flagged in the README.</p></section>
+
+</div></div>
+<footer><p>Part of ShadowGuard-AI. Fonts: Playfair Display SC and IBM Plex Serif, self-hosted; licence texts sit beside the font files. Theme: The Assay Office.</p></footer>
 </body>
 </html>

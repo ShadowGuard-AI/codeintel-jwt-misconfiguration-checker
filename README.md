@@ -1,12 +1,12 @@
-![The north lit bench before the room is entered on the inventory: the mortar monumental in the foreground with ground lapis level inside, the unground lump beside it, a palette knife flat catching light, a dish of bole red, pastel sticks in their shallow box, canvas stretchers leaning against the wall, and the north window filling the upper frame, with no lettering anywhere](intro-banner.png)
+![A hand drawing a small silver piece across a long black touchstone close up, leaving a fresh pale streak on the stone, with clay cupels soft on shelves behind](intro-banner.png)
 
 # codeintel-JWT-Misconfiguration-Checker
 
 Title block: the name above is set in Bellota in bole red on gesso white, ruled as a studio inventory entry with the medium noted first. The small mortar mark below stands beside this first heading only. The remaining headings keep the treatment without the image, so that a long document stays quick to scan.
 
-![One stone mortar from the front and slightly above, thick shallow bowl with a gold size band on the rim, a heap of ground lapis level inside, one unground lump beside it on the bench, and the name lettered below as a studio inventory entry in bole red on gesso white](logo.png)
+![One plain silver cup standing on a black touchstone slab, with a single pale streak rubbed across the stone beside it, on an assay bench](logo.png)
 
-![The north lit studio before work: the mortar full of lapis in the foreground, palette knives flat in a row, pastel sticks in a shallow box, canvas stretchers leaning with their corner keys showing, the tall window behind, and the one inventory line painted on the bench front in bole red on gesso white](banner.png)
+![An assay master rubbing a silver piece across a long black touchstone on his bench and reading the streak, balances and clay cupels ranked behind him and a row of plain silver pieces along the bench edge](banner.png)
 
 ![The studio in three depths: north light changing slowly across the window, the muller circling inside the mortar while the lapis heap deepens, a hand drawing a palette knife once across a smear of bole red, and gold leaf flecks stirring on the bench edge](scene.svg)
 
